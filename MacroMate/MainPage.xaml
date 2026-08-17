@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MacroMate.MainPage"
+             Title="MacroMate">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16">
+
+            <Label Text="MacroMate" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+            
+            <!--DATA REQUESTS-->
+            
+            <!--Age request-->
+            <Label Text="Age"/>
+            <Entry x:Name="AgeEntry" Keyboard="Numeric"/>
+            
+            <!--Height request-->
+            <Label Text="Height (cm)" />
+            <Entry x:Name="HeightEntry" Keyboard="Numeric" />
+            
+            <!--Weight request-->
+            <Label Text="Weight (kg)" />
+            <Entry x:Name="WeightEntry" Keyboard="Numeric" />
+            
+            <!--Gender request-->
+            <Label Text="Gender"/>
+            <Picker x:Name="GenderPicker">
+                <Picker.Items>
+                    <x:String>Male</x:String>
+                    <x:String>Female</x:String>
+                </Picker.Items>
+            </Picker>
+            
+            <!--Activity level request-->
+            <Label Text="Activity Level" />
+            <Picker x:Name="ActivityPicker">
+                <Picker.Items>
+                    <x:String>Sedentary (little or no exercise)</x:String>
+                    <x:String>Lightly active (1-3x/week)</x:String>
+                    <x:String>Moderately active (3-5x/week)</x:String>
+                    <x:String>Very active (6-7x/week)</x:String>
+                    <x:String>Extremely active (physical job + sport)</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <!--CALCULATE BUTTON-->
+            <Button x:Name="CalculateBtn" Text="Calculate" Clicked="OnCalculateClicked" />
+
+            <!--bmr and tdee labels-->
+            <HorizontalStackLayout IsVisible="False" x:Name="BmrRow" Spacing="8">
+                <Label x:Name="BmrLabel" FontSize="15" VerticalOptions="Center" />
+                <Label Text="ℹ️" FontSize="15" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBmrInfoTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout IsVisible="False" x:Name="TdeeRow" Spacing="8">
+                <Label x:Name="TdeeLabel" FontSize="15" VerticalOptions="Center" />
+                <Label Text="ℹ️" FontSize="15" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTdeeInfoTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+            <!--Goal picker-->
+            <Label Text="Your Goal" IsVisible="False" x:Name="GoalLabel" />
+            <Picker x:Name="GoalPicker" IsVisible="False">
+                <Picker.Items>
+                    <x:String>Cut (lose fat)</x:String>
+                    <x:String>Recomp (lose fat + gain muscle)</x:String>
+                    <x:String>Maintain</x:String>
+                    <x:String>Bulk (gain muscle)</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <!--Aggressiveness slider-->
+            <Label x:Name="AggressivenessLabel" IsVisible="False" Text="Aggressiveness: Moderate" />
+            <Slider x:Name="AggressivenessSlider" IsVisible="False" 
+        Minimum="1" Maximum="3" Value="2" 
+        ValueChanged="OnSliderChanged" />
+            <Label x:Name="AggressivenessDescription" IsVisible="False" TextColor="Gray" FontSize="13" />
+
+            <!--Result button-->
+            <Button x:Name="ResultBtn" Text="Get My Plan" IsVisible="False" Clicked="OnResultClicked" />
+
+            <!--Final result-->
+            <Label x:Name="ResultLabel" IsVisible="False" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
