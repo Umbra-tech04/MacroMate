@@ -8,21 +8,21 @@
         <VerticalStackLayout Padding="24" Spacing="16">
 
             <Label Text="MacroMate" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
-            
+
             <!--DATA REQUESTS-->
-            
+
             <!--Age request-->
             <Label Text="Age"/>
             <Entry x:Name="AgeEntry" Keyboard="Numeric"/>
-            
+
             <!--Height request-->
             <Label Text="Height (cm)" />
             <Entry x:Name="HeightEntry" Keyboard="Numeric" />
-            
+
             <!--Weight request-->
             <Label Text="Weight (kg)" />
             <Entry x:Name="WeightEntry" Keyboard="Numeric" />
-            
+
             <!--Gender request-->
             <Label Text="Gender"/>
             <Picker x:Name="GenderPicker">
@@ -31,23 +31,11 @@
                     <x:String>Female</x:String>
                 </Picker.Items>
             </Picker>
-            
-            <!--Activity level request-->
-            <Label Text="Activity Level" />
-            <Picker x:Name="ActivityPicker">
-                <Picker.Items>
-                    <x:String>Sedentary (little or no exercise)</x:String>
-                    <x:String>Lightly active (1-3x/week)</x:String>
-                    <x:String>Moderately active (3-5x/week)</x:String>
-                    <x:String>Very active (6-7x/week)</x:String>
-                    <x:String>Extremely active (physical job + sport)</x:String>
-                </Picker.Items>
-            </Picker>
 
             <!--CALCULATE BUTTON-->
             <Button x:Name="CalculateBtn" Text="Calculate" Clicked="OnCalculateClicked" />
 
-            <!--bmr and tdee labels-->
+            <!--BMR label-->
             <HorizontalStackLayout IsVisible="False" x:Name="BmrRow" Spacing="8">
                 <Label x:Name="BmrLabel" FontSize="15" VerticalOptions="Center" />
                 <Label Text="ℹ️" FontSize="15" VerticalOptions="Center">
@@ -57,11 +45,12 @@
                 </Label>
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout IsVisible="False" x:Name="TdeeRow" Spacing="8">
-                <Label x:Name="TdeeLabel" FontSize="15" VerticalOptions="Center" />
+            <!--Daily Base label-->
+            <HorizontalStackLayout IsVisible="False" x:Name="BaseRow" Spacing="8">
+                <Label x:Name="BaseLabel" FontSize="15" VerticalOptions="Center" />
                 <Label Text="ℹ️" FontSize="15" VerticalOptions="Center">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnTdeeInfoTapped" />
+                        <TapGestureRecognizer Tapped="OnBaseInfoTapped" />
                     </Label.GestureRecognizers>
                 </Label>
             </HorizontalStackLayout>
@@ -79,16 +68,17 @@
 
             <!--Aggressiveness slider-->
             <Label x:Name="AggressivenessLabel" IsVisible="False" Text="Aggressiveness: Moderate" />
-            <Slider x:Name="AggressivenessSlider" IsVisible="False" 
-        Minimum="1" Maximum="3" Value="2" 
-        ValueChanged="OnSliderChanged" />
+            <Slider x:Name="AggressivenessSlider" IsVisible="False"
+                    Minimum="1" Maximum="3" Value="2"
+                    ValueChanged="OnSliderChanged" />
             <Label x:Name="AggressivenessDescription" IsVisible="False" TextColor="Gray" FontSize="13" />
 
             <!--Result button-->
             <Button x:Name="ResultBtn" Text="Get My Plan" IsVisible="False" Clicked="OnResultClicked" />
 
             <!--Final result-->
-            <Label x:Name="ResultLabel" IsVisible="False" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label x:Name="ResultLabel" IsVisible="False" FontSize="15" />
+
         </VerticalStackLayout>
     </ScrollView>
 

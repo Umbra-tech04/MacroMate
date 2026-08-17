@@ -2,7 +2,9 @@
 
 public partial class MainPage : ContentPage
 {
-    private double _tdee;
+    private double _bmr;
+    private double _dailyBase;
+    private double _adjustment;
 
     public MainPage()
     {
@@ -14,31 +16,23 @@ public partial class MainPage : ContentPage
         if (!double.TryParse(AgeEntry.Text, out double age) ||
             !double.TryParse(HeightEntry.Text, out double height) ||
             !double.TryParse(WeightEntry.Text, out double weight) ||
-            GenderPicker.SelectedIndex == -1 ||
-            ActivityPicker.SelectedIndex == -1)
+            GenderPicker.SelectedIndex == -1)
         {
             DisplayAlert("Error", "Please fill in all fields!", "OK");
             return;
         }
 
-        double bmr;
-
         if (GenderPicker.SelectedIndex == 0)
-        {
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-        }
+            _bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
         else
-        {
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
-        }
+            _bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
 
-        double[] multipliers = { 1.2, 1.375, 1.55, 1.725, 1.9 };
-        _tdee = bmr * multipliers[ActivityPicker.SelectedIndex];
+        _dailyBase = _bmr * 1.2;
 
-        BmrLabel.Text = $"BMR: {bmr:F0} kcal";
-        TdeeLabel.Text = $"TDEE: {_tdee:F0} kcal";
+        BmrLabel.Text = $"BMR: {_bmr:F0} kcal";
+        BaseLabel.Text = $"Daily Base: {_dailyBase:F0} kcal";
         BmrRow.IsVisible = true;
-        TdeeRow.IsVisible = true;
+        BaseRow.IsVisible = true;
         GoalLabel.IsVisible = true;
         GoalPicker.IsVisible = true;
         AggressivenessLabel.IsVisible = true;
@@ -52,9 +46,9 @@ public partial class MainPage : ContentPage
         await DisplayAlert("BMR", "Basal Metabolic Rate - the calories your body burns at complete rest. Breathing, heartbeat, digestion.", "OK");
     }
 
-    private async void OnTdeeInfoTapped(object sender, EventArgs e)
+    private async void OnBaseInfoTapped(object sender, EventArgs e)
     {
-        await DisplayAlert("TDEE", "Total Daily Energy Expenditure - your BMR multiplied by your activity level. This is how many calories you burn per day in total.", "OK");
+        await DisplayAlert("Daily Base", "Your BMR × 1.2 — calories burned on a rest day with minimal movement (walking, daily tasks). Exercise is added on top by the tracker.", "OK");
     }
 
     private void OnSliderChanged(object sender, ValueChangedEventArgs e)
@@ -89,21 +83,24 @@ public partial class MainPage : ContentPage
             return;
         }
 
-        double[] cutDeficits = { -200, -400, -600 };
-        double[] bulkSurpluses = { 150, 300, 500 };
-        double[] recompDeficits = { -100, -200, -300 };
-
-        double target = goal switch
+        // Deficit/surplus értékek (cut negatív, bulk pozitív)
+        double[][] adjustments =
         {
-            0 => _tdee + cutDeficits[level - 1],
-            1 => _tdee + recompDeficits[level - 1],
-            2 => _tdee,
-            3 => _tdee + bulkSurpluses[level - 1],
-            _ => _tdee
+            new double[] { -200, -400, -600 }, // Cut
+            new double[] { -100, -200, -300 }, // Recomp
+            new double[] {    0,    0,    0 }, // Maintain
+            new double[] {  150,  300,  500 }, // Bulk
         };
 
-        string goalName = GoalPicker.Items[goal];
-        ResultLabel.Text = $"{goalName}: {target:F0} kcal/day";
+        _adjustment = adjustments[goal][level - 1];
+
+        double restDay = _dailyBase + _adjustment;
+
+        ResultLabel.Text =
+    $"🛌 Rest day: {restDay:F0} kcal\n" +
+    $"🏋️ Training day: {restDay:F0} kcal + workout (tracked daily)\n" +
+    $"{(_adjustment < 0 ? "📉 Deficit" : _adjustment > 0 ? "📈 Surplus" : "⚖️ Maintain")}: {_adjustment:F0} kcal/day";
+
         ResultLabel.IsVisible = true;
     }
 }
