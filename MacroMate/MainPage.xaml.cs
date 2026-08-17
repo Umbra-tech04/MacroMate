@@ -5,6 +5,7 @@ public partial class MainPage : ContentPage
     private double _bmr;
     private double _dailyBase;
     private double _adjustment;
+    private double _weight;
 
     public MainPage()
     {
@@ -15,7 +16,7 @@ public partial class MainPage : ContentPage
     {
         if (!double.TryParse(AgeEntry.Text, out double age) ||
             !double.TryParse(HeightEntry.Text, out double height) ||
-            !double.TryParse(WeightEntry.Text, out double weight) ||
+            !double.TryParse(WeightEntry.Text, out _weight) ||
             GenderPicker.SelectedIndex == -1)
         {
             DisplayAlert("Error", "Please fill in all fields!", "OK");
@@ -23,9 +24,9 @@ public partial class MainPage : ContentPage
         }
 
         if (GenderPicker.SelectedIndex == 0)
-            _bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            _bmr = (10 * _weight) + (6.25 * height) - (5 * age) + 5;
         else
-            _bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            _bmr = (10 * _weight) + (6.25 * height) - (5 * age) - 161;
 
         _dailyBase = _bmr * 1.2;
 
@@ -83,7 +84,6 @@ public partial class MainPage : ContentPage
             return;
         }
 
-        // Deficit/surplus értékek (cut negatív, bulk pozitív)
         double[][] adjustments =
         {
             new double[] { -200, -400, -600 }, // Cut
@@ -93,13 +93,31 @@ public partial class MainPage : ContentPage
         };
 
         _adjustment = adjustments[goal][level - 1];
-
         double restDay = _dailyBase + _adjustment;
 
+        // Protein alap goal szerint
+        double[] proteinBase = { 2.2, 2.2, 1.8, 1.8 }; // Cut, Recomp, Maintain, Bulk
+        double[] aggressivenessModifier = { -0.2, 0, 0.2 }; // Mild, Moderate, Aggressive
+
+        double proteinPerKg = proteinBase[goal] + aggressivenessModifier[level - 1];
+        double protein = Math.Round(proteinPerKg * _weight);
+        double minProtein = Math.Round(1.6 * _weight);
+
+        // Fat - 25% a kalóriából, minimum 0.5g/kg
+        double fat = Math.Round(Math.Max((restDay * 0.25) / 9, 0.5 * _weight));
+
+        // Carbs - maradék
+        double proteinKcal = protein * 4;
+        double fatKcal = fat * 9;
+        double carbs = Math.Round(Math.Max((restDay - proteinKcal - fatKcal) / 4, 0));
+
         ResultLabel.Text =
-    $"🛌 Rest day: {restDay:F0} kcal\n" +
-    $"🏋️ Training day: {restDay:F0} kcal + workout (tracked daily)\n" +
-    $"{(_adjustment < 0 ? "📉 Deficit" : _adjustment > 0 ? "📈 Surplus" : "⚖️ Maintain")}: {_adjustment:F0} kcal/day";
+            $"🛌 Rest day: {restDay:F0} kcal\n" +
+            $"🏋️ Training day: {restDay:F0} kcal + workout (tracked daily)\n" +
+            $"{(_adjustment < 0 ? "📉 Deficit" : _adjustment > 0 ? "📈 Surplus" : "⚖️ Maintain")}: {_adjustment:F0} kcal/day\n\n" +
+            $"🥩 Protein: {protein:F0}g (min. {minProtein:F0}g)\n" +
+            $"🧈 Fat: {fat:F0}g\n" +
+            $"🌾 Carbs: {carbs:F0}g";
 
         ResultLabel.IsVisible = true;
     }
