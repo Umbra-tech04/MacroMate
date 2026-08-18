@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MacroMate.AddMealPage"
+             Title="Add Meal">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="12">
+
+            <Label Text="What did you eat?" FontSize="22" FontAttributes="Bold" Margin="0,0,0,8"/>
+
+            <Label Text="Meal Type" TextColor="Gray" FontSize="13"/>
+            <Picker x:Name="MealTypePicker">
+                <Picker.Items>
+                    <x:String>Breakfast</x:String>
+                    <x:String>Lunch</x:String>
+                    <x:String>Dinner</x:String>
+                    <x:String>Snack</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Label Text="Description" TextColor="Gray" FontSize="13"/>
+            <Entry x:Name="DescriptionEntry" Placeholder="e.g. 3 eggs, 2 avocado" Keyboard="Plain"/>
+
+            <Label Text="Macros" FontSize="16" FontAttributes="Bold" Margin="0,8,0,0"/>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="8">
+                <Label Grid.Row="0" Grid.Column="0" Text="Calories (kcal)" TextColor="Gray" FontSize="13"/>
+                <Entry Grid.Row="1" Grid.Column="0" x:Name="CaloriesEntry" Placeholder="0" Keyboard="Numeric"/>
+
+                <Label Grid.Row="0" Grid.Column="1" Text="Protein (g)" TextColor="Gray" FontSize="13"/>
+                <Entry Grid.Row="1" Grid.Column="1" x:Name="ProteinEntry" Placeholder="0" Keyboard="Numeric"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Text="Fat (g)" TextColor="Gray" FontSize="13"/>
+                <Entry Grid.Row="3" Grid.Column="0" x:Name="FatEntry" Placeholder="0" Keyboard="Numeric"/>
+
+                <Label Grid.Row="2" Grid.Column="1" Text="Carbs (g)" TextColor="Gray" FontSize="13"/>
+                <Entry Grid.Row="3" Grid.Column="1" x:Name="CarbsEntry" Placeholder="0" Keyboard="Numeric"/>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,16,0,0">
+                <Button Grid.Column="0" x:Name="Cancelbtn" Text="Cancel" Clicked="Cancelbtn_Clicked" BackgroundColor="Transparent" TextColor="Gray" BorderColor="Gray" BorderWidth="1"/>
+                <Button Grid.Column="1" x:Name="Savebtn" Text="Add Meal" Clicked="Savebtn_Clicked"/>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
