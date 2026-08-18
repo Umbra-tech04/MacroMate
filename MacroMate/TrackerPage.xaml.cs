@@ -41,10 +41,26 @@ public partial class TrackerPage : ContentPage
 
     private void OnMealSaved(Meal meal)
     {
-        var label = new Label
+        var card = new Border
         {
-            Text = $"{meal.type}: {meal.description} | {meal.calories} kcal | P: {meal.protein}g | F: {meal.fat}g | C: {meal.carb}g"
+            Stroke = Colors.Gray,
+            StrokeThickness = 1,
+            StrokeShape = new Microsoft.Maui.Controls.Shapes.Rectangle(),
+            BackgroundColor = Color.FromArgb("#1a1a1a"),
+            Padding = new Thickness(12, 8),
+            Margin = new Thickness(0, 0, 0, 8),
+            Content = new VerticalStackLayout
+            {
+                Spacing = 4,
+                Children =
+            {
+                new Label { Text = meal.type, FontSize = 11, TextColor = Colors.Gray },
+                new Label { Text = meal.description, FontSize = 14, TextColor = Colors.White, FontAttributes = FontAttributes.Bold },
+                new Label { Text = $"{meal.calories} kcal  |  P: {meal.protein}g  F: {meal.fat}g  C: {meal.carb}g", FontSize = 12, TextColor = Colors.Gray }
+            }
+            }
         };
-        MealsList.Children.Add(label);
+
+        MealsList.Children.Add(card);
     }
 }

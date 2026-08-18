@@ -5,12 +5,9 @@
              Title="Add Meal">
 
     <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="12">
+        <VerticalStackLayout Padding="20" Spacing="8">
 
-            <Label Text="What did you eat?" FontSize="22" FontAttributes="Bold" Margin="0,0,0,8"/>
-
-            <Label Text="Meal Type" TextColor="Gray" FontSize="13"/>
-            <Picker x:Name="MealTypePicker">
+            <Picker x:Name="MealTypePicker" Title="Meal type">
                 <Picker.Items>
                     <x:String>Breakfast</x:String>
                     <x:String>Lunch</x:String>
@@ -19,26 +16,16 @@
                 </Picker.Items>
             </Picker>
 
-            <Label Text="Description" TextColor="Gray" FontSize="13"/>
-            <Entry x:Name="DescriptionEntry" Placeholder="e.g. 3 eggs, 2 avocado" Keyboard="Plain"/>
+            <Entry x:Name="DescriptionEntry" Placeholder="What did you eat?" Keyboard="Plain"/>
 
-            <Label Text="Macros" FontSize="16" FontAttributes="Bold" Margin="0,8,0,0"/>
-
-            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="8">
-                <Label Grid.Row="0" Grid.Column="0" Text="Calories (kcal)" TextColor="Gray" FontSize="13"/>
-                <Entry Grid.Row="1" Grid.Column="0" x:Name="CaloriesEntry" Placeholder="0" Keyboard="Numeric"/>
-
-                <Label Grid.Row="0" Grid.Column="1" Text="Protein (g)" TextColor="Gray" FontSize="13"/>
-                <Entry Grid.Row="1" Grid.Column="1" x:Name="ProteinEntry" Placeholder="0" Keyboard="Numeric"/>
-
-                <Label Grid.Row="2" Grid.Column="0" Text="Fat (g)" TextColor="Gray" FontSize="13"/>
-                <Entry Grid.Row="3" Grid.Column="0" x:Name="FatEntry" Placeholder="0" Keyboard="Numeric"/>
-
-                <Label Grid.Row="2" Grid.Column="1" Text="Carbs (g)" TextColor="Gray" FontSize="13"/>
-                <Entry Grid.Row="3" Grid.Column="1" x:Name="CarbsEntry" Placeholder="0" Keyboard="Numeric"/>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="8" Margin="0,8,0,0">
+                <Entry Grid.Row="0" Grid.Column="0" x:Name="CaloriesEntry" Placeholder="Calories (kcal)" Keyboard="Numeric"/>
+                <Entry Grid.Row="0" Grid.Column="1" x:Name="ProteinEntry" Placeholder="Protein (g)" Keyboard="Numeric"/>
+                <Entry Grid.Row="1" Grid.Column="0" x:Name="FatEntry" Placeholder="Fat (g)" Keyboard="Numeric"/>
+                <Entry Grid.Row="1" Grid.Column="1" x:Name="CarbsEntry" Placeholder="Carbs (g)" Keyboard="Numeric"/>
             </Grid>
 
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,16,0,0">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8" Margin="0,12,0,0">
                 <Button Grid.Column="0" x:Name="Cancelbtn" Text="Cancel" Clicked="Cancelbtn_Clicked" BackgroundColor="Transparent" TextColor="Gray" BorderColor="Gray" BorderWidth="1"/>
                 <Button Grid.Column="1" x:Name="Savebtn" Text="Add Meal" Clicked="Savebtn_Clicked"/>
             </Grid>
